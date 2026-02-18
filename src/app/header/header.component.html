@@ -1,0 +1,39 @@
+<header class="app-header">
+  <div class="container header-container">
+    <a class="logo" routerLink="/jobs">
+      <i class="bi bi-briefcase-fill"></i> JobFinder
+    </a>
+
+
+    <nav class="main-nav">
+      <ul class="nav-links">
+        <li><a routerLink="/jobs" routerLinkActive="active">Recherche</a></li>
+
+        @if (authService.isLoggedIn()) {
+          <li><a routerLink="/favorites" routerLinkActive="active">Favoris</a></li>
+          <li><a routerLink="/applications" routerLinkActive="active">Candidatures</a></li>
+          <li><a routerLink="/profile" routerLinkActive="active">Mon profil</a></li>
+
+        }
+      </ul>
+    </nav>
+
+    <div class="user-actions">
+      @if (authService.isLoggedIn()) {
+        <span class="user-greeting">
+          Bonjour, {{ authService.getCurrentUser()?.firstName }}
+        </span>
+        <button class="btn btn-outline-secondary btn-sm" (click)="logout()">
+          <i class="bi bi-box-arrow-right"></i> Déconnexion
+        </button>
+      } @else {
+        <a class="btn btn-outline-primary btn-sm" routerLink="/auth/login">
+          <i class="bi bi-box-arrow-in-right"></i> Connexion
+        </a>
+        <a class="btn btn-primary btn-sm" routerLink="/auth/register">
+          <i class="bi bi-person-plus"></i> Inscription
+        </a>
+      }
+    </div>
+  </div>
+</header>
