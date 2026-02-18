@@ -1,0 +1,122 @@
+
+<div class="container mt-4">
+  <!-- Formulaire de recherche -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="card-title mb-4">
+        <i class="bi bi-search"></i> Rechercher des emplois
+      </h2>
+
+      <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+        <div class="row g-3">
+          <!-- Champ "Mots-clés" -->
+          <div class="col-md-5">
+            <label for="what" class="form-label">
+              Mots-clés (titre du poste) <span class="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              id="what"
+              formControlName="what"
+              placeholder="Ex: Développeur, Designer, Marketing..."
+              [class.is-invalid]="isFieldInvalid('what')"
+            >
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('what')">
+              {{ getErrorMessage('what') }}
+            </div>
+          </div>
+
+          <!-- Champ "Localisation" -->
+          <div class="col-md-5">
+            <label for="where" class="form-label">
+              Localisation <span class="text-danger">*</span>
+            </label>
+            <select
+              class="form-select"
+              id="where"
+              formControlName="where"
+              [class.is-invalid]="isFieldInvalid('where')"
+            >
+              <option value="">-- Sélectionnez une ville --</option>
+              <option *ngFor="let location of popularLocations" [value]="location">
+                {{ location }}
+              </option>
+            </select>
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('where')">
+              {{ getErrorMessage('where') }}
+            </div>
+          </div>
+
+          <!-- Boutons d'action -->
+          <div class="col-md-2 d-flex align-items-end">
+            <button
+              type="submit"
+              class="btn btn-primary w-100"
+              [disabled]="isLoading"
+            >
+              <span *ngIf="!isLoading">
+                <i class="bi bi-search"></i> Rechercher
+              </span>
+              <span *ngIf="isLoading">
+                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                Recherche...
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Bouton réinitialiser -->
+        <div class="row mt-2">
+          <div class="col-12">
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-sm"
+              (click)="resetSearch()"
+              [disabled]="isLoading"
+            >
+              <i class="bi bi-arrow-clockwise"></i> Réinitialiser
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div class="alert alert-danger" role="alert" *ngIf="errorMessage && !isLoading">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    {{ errorMessage }}
+  </div>
+
+  <!-- Indicateur de chargement -->
+  <div class="text-center my-5" *ngIf="isLoading">
+    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+    <p class="mt-3 text-muted">Recherche en cours...</p>
+  </div>
+
+  <!-- Liste des résultats -->
+  <div *ngIf="jobs.length > 0 && !isLoading">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3>Résultats de recherche</h3>
+      <span class="badge bg-secondary">{{ jobs.length }} offre(s) trouvée(s)</span>
+    </div>
+
+    <!-- Composant de liste des jobs -->
+    <app-job-list
+      [jobs]="jobs"
+      [currentPage]="currentPage"
+      [resultsPerPage]="resultsPerPage"
+      (previousPage)="loadPreviousPage()"
+      (nextPage)="loadNextPage()"
+    ></app-job-list>
+  </div>
+
+  <!-- Message si aucun résultat et pas en cours de recherche -->
+  <div class="text-center my-5" *ngIf="jobs.length === 0 && !isLoading && !errorMessage">
+    <i class="bi bi-inbox" style="font-size: 4rem; color: #ccc;"></i>
+    <p class="mt-3 text-muted">Effectuez une recherche pour voir des offres d'emploi</p>
+  </div>
+</div>
