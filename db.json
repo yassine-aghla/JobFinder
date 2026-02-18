@@ -1,0 +1,13 @@
+{
+  "users": [
+    {
+      "firstName": "Yassine",
+      "lastName": "Aghla",
+      "email": "yassineaghla23@gmail.com",
+      "password": "yassine123",
+      "id": 1
+    }
+  ],
+  "favorites": [],
+  "applications": []
+}
