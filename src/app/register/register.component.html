@@ -1,0 +1,161 @@
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <!-- Header -->
+    <div class="auth-header">
+      <div class="logo">
+        <div class="logo-icon"></div>
+        <span class="logo-text">JobFinder</span>
+      </div>
+      <h1>Créer un compte</h1>
+      <p class="subtitle">Rejoignez des milliers de chercheurs d'emploi</p>
+    </div>
+
+    <!-- Error -->
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+
+      <!-- Prénom & Nom (side by side) -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">Prénom</label>
+          <div class="input-wrapper">
+            <span class="input-icon user"></span>
+            <input
+              id="firstName"
+              type="text"
+              formControlName="firstName"
+              placeholder="Jean"
+              [class.is-invalid]="firstName?.invalid && firstName?.touched"
+            />
+          </div>
+          <div class="error-msg" *ngIf="firstName?.touched && firstName?.hasError('required')">
+            Le prénom est obligatoire.
+          </div>
+          <div class="error-msg" *ngIf="firstName?.touched && firstName?.hasError('minlength')">
+            Minimum 2 caractères.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Nom</label>
+          <div class="input-wrapper">
+            <span class="input-icon user"></span>
+            <input
+              id="lastName"
+              type="text"
+              formControlName="lastName"
+              placeholder="Dupont"
+              [class.is-invalid]="lastName?.invalid && lastName?.touched"
+            />
+          </div>
+          <div class="error-msg" *ngIf="lastName?.touched && lastName?.hasError('required')">
+            Le nom est obligatoire.
+          </div>
+          <div class="error-msg" *ngIf="lastName?.touched && lastName?.hasError('minlength')">
+            Minimum 2 caractères.
+          </div>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Adresse email</label>
+        <div class="input-wrapper">
+          <span class="input-icon email"></span>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="exemple@email.com"
+            [class.is-invalid]="email?.invalid && email?.touched"
+          />
+        </div>
+        <div class="error-msg" *ngIf="email?.touched && email?.hasError('required')">
+          L'email est obligatoire.
+        </div>
+        <div class="error-msg" *ngIf="email?.touched && email?.hasError('email')">
+          Email invalide.
+        </div>
+      </div>
+
+      <!-- Mot de passe -->
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <div class="input-wrapper">
+          <span class="input-icon password"></span>
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="Min. 6 caractères"
+            [class.is-invalid]="password?.invalid && password?.touched"
+          />
+          <button
+            type="button"
+            class="toggle-pw"
+            (click)="showPassword = !showPassword"
+            [attr.aria-label]="showPassword ? 'Cacher le mot de passe' : 'Afficher le mot de passe'"
+          >
+            {{ showPassword ? 'Cacher' : 'Afficher' }}
+          </button>
+        </div>
+        <div class="error-msg" *ngIf="password?.touched && password?.hasError('required')">
+          Le mot de passe est obligatoire.
+        </div>
+        <div class="error-msg" *ngIf="password?.touched && password?.hasError('minlength')">
+          Minimum 6 caractères.
+        </div>
+      </div>
+
+      <!-- Confirmer mot de passe -->
+      <div class="form-group">
+        <label for="confirmPassword">Confirmer le mot de passe</label>
+        <div class="input-wrapper">
+          <span class="input-icon password"></span>
+          <input
+            id="confirmPassword"
+            [type]="showConfirm ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            placeholder="Répétez le mot de passe"
+            [class.is-invalid]="
+              (confirmPassword?.touched && confirmPassword?.hasError('required')) ||
+              (confirmPassword?.touched && registerForm.hasError('passwordMismatch'))
+            "
+          />
+          <button
+            type="button"
+            class="toggle-pw"
+            (click)="showConfirm = !showConfirm"
+            [attr.aria-label]="showConfirm ? 'Cacher la confirmation' : 'Afficher la confirmation'"
+          >
+            {{ showConfirm ? 'Cacher' : 'Afficher' }}
+          </button>
+        </div>
+        <div class="error-msg" *ngIf="confirmPassword?.touched && confirmPassword?.hasError('required')">
+          Veuillez confirmer votre mot de passe.
+        </div>
+        <div class="error-msg" *ngIf="confirmPassword?.touched && registerForm.hasError('passwordMismatch')">
+          Les mots de passe ne correspondent pas.
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn-primary" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Créer mon compte</span>
+        <span *ngIf="isLoading" class="spinner"></span>
+      </button>
+
+    </form>
+
+    <!-- Footer -->
+    <div class="auth-footer">
+      <p>Déjà un compte ?
+        <a routerLink="/auth/login">Se connecter</a>
+      </p>
+    </div>
+  </div>
+</div>
