@@ -1,0 +1,58 @@
+
+
+.job-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-left: 4px solid transparent;
+}
+
+.job-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+  border-left-color: #0d6efd;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.card-subtitle {
+  font-size: 1rem;
+}
+
+.job-meta .badge {
+  font-weight: 500;
+  padding: 0.5em 0.75em;
+}
+
+.card-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .job-card .col-md-3 {
+    margin-top: 1rem;
+  }
+
+  .d-grid.gap-2 {
+    gap: 0.5rem !important;
+  }
+}
+
+/* Animation pour le chargement */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.job-card {
+  animation: fadeIn 0.5s ease-in;
+}
