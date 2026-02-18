@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
 import { Job } from '../../models/job';
 import { AuthService } from '../../services/auth.service';
+import { ApplicationsService } from '../../services/applications.service'; // ← Import ajouté
 import * as FavoritesActions from '../../store/favorites.actions';
 import * as FavoritesSelectors from '../../store/favorites.selectors';
 
@@ -25,12 +26,13 @@ export class JobListComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private currentUserId: number | null = null;
 
-  // État local pour l'affichage rapide (optionnel, on peut aussi utiliser le selector directement)
+  // État local pour les favoris
   favoriteStatus: { [offerId: string]: boolean } = {};
   private favoriteIdMap: { [offerId: string]: number } = {};
 
   constructor(
     private authService: AuthService,
+    private applicationsService: ApplicationsService, // ← Injection ajoutée
     private store: Store,
     private router: Router
   ) {}
@@ -42,7 +44,6 @@ export class JobListComponent implements OnInit, OnDestroy {
         this.currentUserId = user.id;
         this.store.dispatch(FavoritesActions.loadFavorites({ userId: user.id }));
 
-        // S'abonner aux changements de la liste des favoris
         this.store.select(FavoritesSelectors.selectAllFavorites)
           .pipe(takeUntil(this.destroy$))
           .subscribe(favorites => {
@@ -99,6 +100,54 @@ export class JobListComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Suivi de candidature (nouvelle méthode)
+  trackApplication(job: Job): void {
+    if (!this.isAuthenticated()) {
+      alert('Veuillez vous connecter pour suivre des candidatures');
+      this.router.navigate(['/auth/login']);
+      return;
+    }
+
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) return;
+
+    this.applicationsService.checkExisting(currentUser.id, job.id).subscribe({
+      next: (existing) => {
+        if (existing.length > 0) {
+          alert('Cette offre est déjà dans votre suivi de candidatures.');
+          return;
+        }
+
+        const newApplication = {
+          userId: currentUser.id,
+          offerId: job.id,
+          apiSource: job.apiSource,
+          title: job.title,
+          company: job.company,
+          location: job.location,
+          url: job.url,
+          status: 'en_attente' as const,
+          notes: '',
+          dateAdded: new Date().toISOString()
+        };
+
+        this.applicationsService.addApplication(newApplication).subscribe({
+          next: () => {
+            alert('Offre ajoutée à votre suivi de candidatures.');
+          },
+          error: (err) => {
+            console.error('Erreur lors de l\'ajout:', err);
+            alert('Une erreur est survenue. Veuillez réessayer.');
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Erreur lors de la vérification:', err);
+        alert('Erreur de vérification. Veuillez réessayer.');
+      }
+    });
+  }
+
   viewJob(url: string): void {
     window.open(url, '_blank');
   }
@@ -118,7 +167,6 @@ export class JobListComponent implements OnInit, OnDestroy {
     }
     return date.toLocaleDateString('fr-FR');
   }
-
 
   onPreviousPage(): void {
     if (this.currentPage > 1) this.previousPage.emit();

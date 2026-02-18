@@ -34,6 +34,8 @@ export class JobSearchComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForm();
     this.popularLocations = this.adzunaService.getPopularLocations();
+    this.adzunaService.searchJobs({ what: 'developer', where: 'Paris', page: 1, results_per_page: 10 })
+      .subscribe(jobs => this.jobs = jobs);
   }
 
   private initializeForm(): void {
@@ -133,7 +135,6 @@ export class JobSearchComponent implements OnInit {
 
   resetSearch(): void {
     this.searchForm.reset();
-    this.jobs = [];
     this.errorMessage = '';
     this.currentPage = 1;
   }

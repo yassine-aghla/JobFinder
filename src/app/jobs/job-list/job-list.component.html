@@ -38,6 +38,13 @@
               <i class="bi" [class.bi-star-fill]="isFavorite(job)" [class.bi-star]="!isFavorite(job)"></i>
               {{ isFavorite(job) ? 'Favori' : 'Favoris' }}
             </button>
+            <button
+              class="btn btn-outline-info btn-sm"
+              (click)="trackApplication(job)"
+              *ngIf="isAuthenticated()"
+            >
+              <i class="bi bi-clipboard-check"></i> Suivre
+            </button>
           </div>
           <div class="mt-2">
             <span class="badge bg-secondary">
