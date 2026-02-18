@@ -1,0 +1,86 @@
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <!-- Logo / Header -->
+    <div class="auth-header">
+      <div class="logo">
+        <div class="logo-icon"></div>
+        <span class="logo-text">JobFinder</span>
+      </div>
+      <h1>Bon retour !</h1>
+      <p class="subtitle">Connectez-vous pour accéder à votre espace</p>
+    </div>
+
+    <!-- Error Message -->
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Adresse email</label>
+        <div class="input-wrapper">
+          <span class="input-icon email"></span>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="exemple@email.com"
+            [class.is-invalid]="email?.invalid && email?.touched"
+          />
+        </div>
+        <div class="error-msg" *ngIf="email?.touched && email?.hasError('required')">
+          L'email est obligatoire.
+        </div>
+        <div class="error-msg" *ngIf="email?.touched && email?.hasError('email')">
+          Veuillez saisir un email valide.
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <div class="input-wrapper">
+          <span class="input-icon password"></span>
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="••••••••"
+            [class.is-invalid]="password?.invalid && password?.touched"
+          />
+          <button
+            type="button"
+            class="toggle-pw"
+            (click)="showPassword = !showPassword"
+            [attr.aria-label]="showPassword ? 'Cacher le mot de passe' : 'Afficher le mot de passe'"
+          >
+            {{ showPassword ? 'Cacher' : 'Afficher' }}
+          </button>
+        </div>
+        <div class="error-msg" *ngIf="password?.touched && password?.hasError('required')">
+          Le mot de passe est obligatoire.
+        </div>
+        <div class="error-msg" *ngIf="password?.touched && password?.hasError('minlength')">
+          Le mot de passe doit contenir au moins 6 caractères.
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn-primary" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Se connecter</span>
+        <span *ngIf="isLoading" class="spinner"></span>
+      </button>
+
+    </form>
+
+    <!-- Footer -->
+    <div class="auth-footer">
+      <p>Pas encore de compte ?
+        <a routerLink="/auth/register">Créer un compte</a>
+      </p>
+    </div>
+  </div>
+</div>
