@@ -17,5 +17,9 @@ export const routes: Routes = [
       }
     ]
   },
+  {
+    path: 'jobs',
+    loadComponent: () => import('./jobs/job-search/job-search.component').then(m => m.JobSearchComponent)
+  },
   { path: '**', redirectTo: 'jobs' }
 ];
