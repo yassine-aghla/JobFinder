@@ -31,5 +31,10 @@ export const routes: Routes = [
     loadComponent: () => import('./profile/profile.component').then(m => m.ProfileComponent),
     canActivate: [authGuard]
   },
+  {
+    path: 'applications',
+    loadComponent: () => import('./tracked-applications/tracked-applications.component').then(m => m.TrackedApplicationsComponent),
+    canActivate: [authGuard]
+  },
   { path: '**', redirectTo: 'jobs' }
 ];

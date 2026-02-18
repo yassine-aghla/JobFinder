@@ -6,6 +6,13 @@
       "email": "yassineaghla23@gmail.com",
       "password": "yassine123",
       "id": 1
+    },
+    {
+      "firstName": "zakaria",
+      "lastName": "elmoufid",
+      "email": "elmoufid@gmail.com",
+      "password": "ziko123",
+      "id": 2
     }
   ],
   "favorites": [
@@ -26,7 +33,65 @@
       "company": "Cherry Pick",
       "location": "Paris, Ile-de-France",
       "id": 2
+    },
+    {
+      "userId": 2,
+      "offerId": "5634636997",
+      "apiSource": "adzuna",
+      "title": "Conseiller de Vente - Grande Surface - Alternance H/F",
+      "company": "IFAE Business School",
+      "location": "Paris, Ile-de-France",
+      "id": 3
+    },
+    {
+      "userId": 2,
+      "offerId": "5634660561",
+      "apiSource": "adzuna",
+      "title": "Chauffeur Routier - Chauffeuse Routière H/F",
+      "company": "Temporis Interim",
+      "location": "Yonne, Bourgogne-Franche-Comté",
+      "id": 4
     }
   ],
-  "applications": []
+  "applications": [
+    {
+      "userId": 1,
+      "offerId": "5633875317",
+      "apiSource": "adzuna",
+      "title": "Développeur HTML/CSS (IT) / Freelance",
+      "company": "Cherry Pick",
+      "location": "Paris, Ile-de-France",
+      "url": "https://www.adzuna.fr/details/5633875317?utm_medium=api&utm_source=bbb9f2fe",
+      "status": "accepté",
+      "notes": "ce offre a ete accepte",
+      "dateAdded": "2026-02-18T02:29:59.579Z",
+      "id": 1
+    },
+    {
+      "userId": 1,
+      "offerId": "5633875331",
+      "apiSource": "adzuna",
+      "title": "Administrateur Bases de Données PostgreSQL Expert (Infra / Cloud) (IT) / Freelance",
+      "company": "Gentis Recruitment SAS",
+      "location": "Paris, Ile-de-France",
+      "url": "https://www.adzuna.fr/details/5633875331?utm_medium=api&utm_source=bbb9f2fe",
+      "status": "en_attente",
+      "notes": "",
+      "dateAdded": "2026-02-18T02:30:03.625Z",
+      "id": 2
+    },
+    {
+      "userId": 2,
+      "offerId": "5634636997",
+      "apiSource": "adzuna",
+      "title": "Conseiller de Vente - Grande Surface - Alternance H/F",
+      "company": "IFAE Business School",
+      "location": "Paris, Ile-de-France",
+      "url": "https://www.adzuna.fr/details/5634636997?utm_medium=api&utm_source=bbb9f2fe",
+      "status": "refusé",
+      "notes": "JE SUIS REFUSE",
+      "dateAdded": "2026-02-18T16:50:00.380Z",
+      "id": 3
+    }
+  ]
 }
