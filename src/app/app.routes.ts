@@ -26,5 +26,10 @@ export const routes: Routes = [
     loadComponent: () => import('./favorites/favorites.component').then(m => m.FavoritesComponent),
     canActivate: [authGuard]
   },
+  {
+    path: 'profile',
+    loadComponent: () => import('./profile/profile.component').then(m => m.ProfileComponent),
+    canActivate: [authGuard]
+  },
   { path: '**', redirectTo: 'jobs' }
 ];
