@@ -1,0 +1,33 @@
+<div class="container mt-4">
+  <h2>Mes favoris</h2>
+
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && favorites.length === 0" class="alert alert-info">
+    Vous n'avez aucun favori. Parcourez les offres et cliquez sur l'étoile pour en ajouter.
+  </div>
+
+  <div class="row" *ngIf="favorites.length > 0">
+    <div class="col-md-12">
+      <div class="card mb-3" *ngFor="let fav of favorites">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <h5 class="card-title">{{ fav.title }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{ fav.company }} - {{ fav.location }}</h6>
+              <p class="small text-muted" *ngIf="fav.apiSource">Source: {{ fav.apiSource }}</p>
+            </div>
+            <button class="btn btn-sm btn-outline-danger" (click)="removeFavorite(fav)">
+              <i class="bi bi-trash"></i> Retirer
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
