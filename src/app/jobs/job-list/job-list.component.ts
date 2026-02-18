@@ -1,8 +1,12 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Subject, takeUntil } from 'rxjs';
 import { Job } from '../../models/job';
 import { AuthService } from '../../services/auth.service';
+import * as FavoritesActions from '../../store/favorites.actions';
+import * as FavoritesSelectors from '../../store/favorites.selectors';
 
 @Component({
   selector: 'app-job-list',
@@ -11,40 +15,88 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [CommonModule]
 })
-export class JobListComponent {
+export class JobListComponent implements OnInit, OnDestroy {
   @Input() jobs: Job[] = [];
   @Input() currentPage: number = 1;
   @Input() resultsPerPage: number = 10;
   @Output() previousPage = new EventEmitter<void>();
   @Output() nextPage = new EventEmitter<void>();
 
+  private destroy$ = new Subject<void>();
+  private currentUserId: number | null = null;
+
+  // État local pour l'affichage rapide (optionnel, on peut aussi utiliser le selector directement)
+  favoriteStatus: { [offerId: string]: boolean } = {};
+  private favoriteIdMap: { [offerId: string]: number } = {};
+
   constructor(
     private authService: AuthService,
+    private store: Store,
     private router: Router
   ) {}
+
+  ngOnInit(): void {
+    if (this.isAuthenticated()) {
+      const user = this.authService.getCurrentUser();
+      if (user) {
+        this.currentUserId = user.id;
+        this.store.dispatch(FavoritesActions.loadFavorites({ userId: user.id }));
+
+        // S'abonner aux changements de la liste des favoris
+        this.store.select(FavoritesSelectors.selectAllFavorites)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(favorites => {
+            this.favoriteStatus = {};
+            this.favoriteIdMap = {};
+            favorites.forEach(fav => {
+              if (fav.id) {
+                this.favoriteStatus[fav.offerId] = true;
+                this.favoriteIdMap[fav.offerId] = fav.id;
+              }
+            });
+          });
+      }
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   isAuthenticated(): boolean {
     return this.authService.isLoggedIn();
   }
 
-  // Placeholder pour les favoris
-  addToFavorites(job: Job): void {
-    if (!this.isAuthenticated()) {
-      alert('Veuillez vous connecter pour ajouter des favoris');
-      this.router.navigate(['/auth/login']);
-      return;
-    }
-    alert('Fonctionnalité "Favoris" non disponible pour le moment.');
+  isFavorite(job: Job): boolean {
+    return !!this.favoriteStatus[job.id];
   }
 
-  // Placeholder pour le suivi
-  trackApplication(job: Job): void {
+  toggleFavorite(job: Job): void {
     if (!this.isAuthenticated()) {
-      alert('Veuillez vous connecter pour suivre des candidatures');
+      alert('Veuillez vous connecter pour gérer vos favoris');
       this.router.navigate(['/auth/login']);
       return;
     }
-    alert('Fonctionnalité "Suivi des candidatures" non disponible pour le moment.');
+
+    if (!this.currentUserId) return;
+
+    if (this.isFavorite(job)) {
+      const favId = this.favoriteIdMap[job.id];
+      if (favId) {
+        this.store.dispatch(FavoritesActions.removeFavorite({ id: favId }));
+      }
+    } else {
+      const newFavorite = {
+        userId: this.currentUserId,
+        offerId: job.id,
+        apiSource: job.apiSource,
+        title: job.title,
+        company: job.company,
+        location: job.location
+      };
+      this.store.dispatch(FavoritesActions.addFavorite({ favorite: newFavorite }));
+    }
   }
 
   viewJob(url: string): void {
@@ -66,6 +118,7 @@ export class JobListComponent {
     }
     return date.toLocaleDateString('fr-FR');
   }
+
 
   onPreviousPage(): void {
     if (this.currentPage > 1) this.previousPage.emit();

@@ -8,6 +8,25 @@
       "id": 1
     }
   ],
-  "favorites": [],
+  "favorites": [
+    {
+      "userId": 1,
+      "offerId": "5633875352",
+      "apiSource": "adzuna",
+      "title": "Techlead Java / DevSecOps - LYON",
+      "company": "TEOLIA CONSULTING",
+      "location": "Lyon, Rhône",
+      "id": 1
+    },
+    {
+      "userId": 1,
+      "offerId": "5633875317",
+      "apiSource": "adzuna",
+      "title": "Développeur HTML/CSS (IT) / Freelance",
+      "company": "Cherry Pick",
+      "location": "Paris, Ile-de-France",
+      "id": 2
+    }
+  ],
   "applications": []
 }

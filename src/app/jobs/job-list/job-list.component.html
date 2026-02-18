@@ -23,31 +23,22 @@
 
         <div class="col-md-3 d-flex flex-column justify-content-between">
           <div class="d-grid gap-2">
-            <!-- Bouton voir l'offre -->
             <button class="btn btn-primary btn-sm" (click)="viewJob(job.url)">
               <i class="bi bi-eye"></i> Voir l'offre
             </button>
 
-            <!-- Bouton favoris (placeholder) -->
+            <!-- Bouton favoris avec indicateur visuel -->
             <button
               class="btn btn-outline-warning btn-sm"
-              (click)="addToFavorites(job)"
+              (click)="toggleFavorite(job)"
               *ngIf="isAuthenticated()"
+              [class.btn-warning]="isFavorite(job)"
+              [class.text-white]="isFavorite(job)"
             >
-              <i class="bi bi-star"></i> Favoris
-            </button>
-
-            <!-- Bouton suivre (placeholder) -->
-            <button
-              class="btn btn-outline-info btn-sm"
-              (click)="trackApplication(job)"
-              *ngIf="isAuthenticated()"
-            >
-              <i class="bi bi-clipboard-check"></i> Suivre
+              <i class="bi" [class.bi-star-fill]="isFavorite(job)" [class.bi-star]="!isFavorite(job)"></i>
+              {{ isFavorite(job) ? 'Favori' : 'Favoris' }}
             </button>
           </div>
-
-          <!-- Badge source API -->
           <div class="mt-2">
             <span class="badge bg-secondary">
               <i class="bi bi-code-square"></i> {{ job.apiSource }}
