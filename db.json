@@ -51,6 +51,42 @@
       "company": "Temporis Interim",
       "location": "Yonne, Bourgogne-Franche-Comté",
       "id": 4
+    },
+    {
+      "userId": 1,
+      "offerId": "5642441765",
+      "apiSource": "adzuna",
+      "title": "RESPONSABLE COMPTE CLÉ NATIONAL H/F",
+      "company": "DE GRAËT CONSULTING",
+      "location": "1er Arrondissement, Paris",
+      "id": 5
+    },
+    {
+      "userId": 1,
+      "offerId": "5642441683",
+      "apiSource": "adzuna",
+      "title": "Directeur Export - Cosmétiques (H/F)",
+      "company": "Michael Page",
+      "location": "1er Arrondissement, Paris",
+      "id": 6
+    },
+    {
+      "userId": 1,
+      "offerId": "5642306176",
+      "apiSource": "adzuna",
+      "title": "COMMERCIAL ASSURANCE H/F -PARIS",
+      "company": "Eclat RH",
+      "location": "Paris, Ile-de-France",
+      "id": 7
+    },
+    {
+      "userId": 1,
+      "offerId": "5642265651",
+      "apiSource": "adzuna",
+      "title": "Directeur de magasin H/F (CDI)",
+      "company": "SIGN UP",
+      "location": "Paris, Ile-de-France",
+      "id": 8
     }
   ],
   "applications": [

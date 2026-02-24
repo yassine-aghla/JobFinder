@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
 import { Job } from '../../models/job';
 import { AuthService } from '../../services/auth.service';
-import { ApplicationsService } from '../../services/applications.service'; // ← Import ajouté
+import { ApplicationsService } from '../../services/applications.service';
 import * as FavoritesActions from '../../store/favorites.actions';
 import * as FavoritesSelectors from '../../store/favorites.selectors';
 
@@ -26,7 +26,6 @@ export class JobListComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private currentUserId: number | null = null;
 
-  // État local pour les favoris
   favoriteStatus: { [offerId: string]: boolean } = {};
   private favoriteIdMap: { [offerId: string]: number } = {};
 
@@ -100,7 +99,6 @@ export class JobListComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Suivi de candidature (nouvelle méthode)
   trackApplication(job: Job): void {
     if (!this.isAuthenticated()) {
       alert('Veuillez vous connecter pour suivre des candidatures');
